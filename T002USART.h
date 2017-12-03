@@ -84,7 +84,7 @@ extern "C" {
 #include <xc.h>
     
     // USART modified library, includes USART from PLIBS compiled with XC8
-    #include "UsartMod.h"
+    #include "UsartExt.h"
 
     // Crystal frecuency
     #define _XTAL_FREQ 20000000
