@@ -1,6 +1,6 @@
 /* 
  * File:   T002USART.h
- * Author: daniel
+ * Author: Daniel Marquina
  *
  * Created on 3/10/2017
  */
@@ -102,8 +102,6 @@ extern "C" {
     #define LED_6	    PORTDbits.RD5
     #define LED_7	    PORTDbits.RD6
     #define LED_8	    PORTDbits.RD7
-
-
 
 #ifdef	__cplusplus
 }

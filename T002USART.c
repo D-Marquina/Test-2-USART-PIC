@@ -17,8 +17,6 @@
 
 
 #include "T002USART.h"
-//#include <stdio.h>
-//#include <stdlib.h>
 
 #define SPBRG_115200 42 // Refer to PIC18F4550's datasheet, page 250
 
@@ -47,8 +45,6 @@ void main(void) {
             USART_ADDEN_OFF, SPBRG_115200);
     BAUDCONbits.BRG16 = 1; // More resolution
     
-
-    
     // Initialization signal
     TRISD = 0x00;
     PORTD = 0xFF;
@@ -64,7 +60,8 @@ void main(void) {
         }
         // Send a float number byte by byte when a pull-up button is pressed
         if(BUT_2 != 1){
-            char* pF = (char*)(&fNum); // Char pointer to float number, points to a byte      
+            // Char pointer to float number, points to a byte 
+            char* pF = (char*)(&fNum);      
             for(char i = 0; i < 4; i++){
                 while(BusyUSART());
                 putcUSART(*(pF + i));
