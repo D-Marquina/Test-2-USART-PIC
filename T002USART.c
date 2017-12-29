@@ -11,21 +11,22 @@
  *      - Add header and sources from Legacy library
  *      - Include those files in compiler's directories
  *      - Compile and use new library
- * 3.15200 bauds will be used, with BRG16 enabled.
+ * 3.115200 bauds will be used, with BRG16 enabled.
  * Created on 3/10/2017
  */
 
 
 #include "T002USART.h"
 
-#define SPBRG_115200 42 // Refer to PIC18F4550's datasheet, page 250
+#define SPBRG_115200 42 // Refer to PIC18F4550's datasheet, page 250, for 115200
 
 // Variables to test
 char message[] = "Hi there."; // To be sent
-float fNum = -1.646325;//To be sent, Little Endian
+float fNum = -1.65687;// To be sent, Little Endian
+unsigned int uiNum = 12345; // To be sent using sprintf
 char inChar; // Incoming char
-char inString[10]; // Incoming string
-unsigned char len = 10; // Length of incoming string
+char outString[6]; // Outgoing string, 1 more char than uiNum because of sprintf
+unsigned char len = 5; // Length of outgoing string, without null character
 
 void main(void) {    
     
@@ -68,6 +69,14 @@ void main(void) {
             }
             __delay_ms(300);
         }
+        // Send an int number as an array when a pull-up button is pressed
+        if(BUT_3 != 1){
+            // Conversion to array 
+            sprintf(outString,"%u",uiNum); // Adds a null character at the end
+            sendStrUSART(outString, len);
+            memset(&outString[0], 0, sizeof(outString));
+            __delay_ms(300);
+        }
     }
 }
 
@@ -79,12 +88,6 @@ void interrupt ISR(void){
         // Retransmits any received character
         inChar = getcUSART();
         putcUSART(inChar);
-        // Uses '*' to receive and retransmit a string of length "len", keeps 
-        // waiting until receives "len" characters
-        if (inChar == '*'){
-            getsUSART(inString, len);        
-            sendStrUSART(inString, len);            
-        }
         return; // Useful when dealing with many interrupt's sources
     }
 }
